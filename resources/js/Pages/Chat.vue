@@ -36,7 +36,10 @@
                                     class="inline-block p-2 rounded-md " style="max-width: 75%;">
                                         {{ message.content}}
                                 </p>
-                                <span class="block mt-1 text-gray-500 text-xs">{{ message.created_at }}</span>
+                                <span class="block mt-1 text-gray-500 text-xs">
+                                    {{ formatDate(message.created_at) }}
+                                    <!-- {{ message.created_at }} -->
+                                </span>
                             </div>
                         </div>
                         <!-- form -->
@@ -59,6 +62,7 @@
 <script>
     import { defineComponent } from 'vue'
     import AppLayout from '@/Layouts/AppLayout.vue'
+    import moment from 'moment';
 
     export default defineComponent({
         components: {
@@ -75,12 +79,16 @@
                 axios.get('api/messages/' + userId).then(response => {
                     this.messages = response.data.messages
                 })
+            },
+            formatDate: function(value) {
+                moment.locale();
+                return moment(value).format('MM/DD/YYYY HH:mm')
             }
         },
         mounted() {
             axios.get('api/users').then(response => {
                 this.users = response.data.users
             })
-        }
+        },
     })
 </script>

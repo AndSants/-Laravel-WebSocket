@@ -4,6 +4,15 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
 
+
+// moment.locale("pt-br");
+
+// Vue.filter('formatDate', function(value){
+//     if (value) {
+//         return moment(value).format('MM/DD/YYYY HH:mm');
+//     }
+// });
+
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 createInertiaApp({
