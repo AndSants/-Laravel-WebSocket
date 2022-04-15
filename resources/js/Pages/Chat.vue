@@ -22,31 +22,21 @@
                             </li>
                         </ul>
                     </div>
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
-                    <!-- parei no 59:11 -->
                     <!-- Box message -->
                     <div class="w-9/12 flex flex-col justify-between">
                         <!-- message -->
+
                         <div class="w-full p-6 flex flex-col overflow-y-scroll">
                             <div
                                 v-for="message in messages" :key="message.id"
-                                class="w-full mb-3 text-right">
-                                <p class="inline-block p-2 rounded-md messageFromMe bg-indigo-300 bg-opacity-25" style="max-width: 75%;">
-                                    {{ message.content}}
+                                :class="(message.from == $page.props.user.id) ? 'text-right' : ''"
+                                class="w-full mb-3">
+                                <p
+                                    :class="(message.from == $page.props.user.id) ? 'messageFromMe' : 'messageToMe'"
+                                    class="inline-block p-2 rounded-md " style="max-width: 75%;">
+                                        {{ message.content}}
                                 </p>
                                 <span class="block mt-1 text-gray-500 text-xs">{{ message.created_at }}</span>
-                            </div>
-
-                            <div class="w-full mb-3 ">
-                                <p class="inline-block p-2 rounded-md messageToMe bg-gray-300 bg-opacity-25" style="max-width: 75%;">
-                                    Oi!
-                                </p>
-                                <span class="block mt-1 text-gray-500 text-xs">11/04/2022 23:13</span>
                             </div>
                         </div>
                         <!-- form -->
@@ -84,7 +74,6 @@
             loadMessages: function(userId){
                 axios.get('api/messages/' + userId).then(response => {
                     this.messages = response.data.messages
-                    console.log(this.messages)
                 })
             }
         },
