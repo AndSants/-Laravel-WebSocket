@@ -14,6 +14,7 @@
                             <li
                                 v-for="user in users" :key="user.id"
                                 @click="() => {loadMessages(user.id)}"
+                                :class="(userActive && userActive.id == user.id) ? 'bg-gray-200 bg-opacity-50' : ''"
                                 class="p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-gray-200 hover:bg-gray-200 hover:bg-opacity-50 hover:cursor-pointer">
                                 <p class="flex items-center">
                                     {{ user.name }}
@@ -71,11 +72,15 @@
         data() {
             return {
                 users: [],
-                messages: []
+                messages: [],
+                userActive: {}
             }
         },
         methods: {
             loadMessages: function(userId){
+                axios.get('api/users/' + userId).then(response => {
+                    this.userActive = response.data.user
+                })
                 axios.get('api/messages/' + userId).then(response => {
                     this.messages = response.data.messages
                 })

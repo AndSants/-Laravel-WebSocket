@@ -22888,13 +22888,17 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       users: [],
-      messages: []
+      messages: [],
+      userActive: {}
     };
   },
   methods: {
     loadMessages: function loadMessages(userId) {
       var _this = this;
 
+      axios.get('api/users/' + userId).then(function (response) {
+        _this.userActive = response.data.user;
+      });
       axios.get('api/messages/' + userId).then(function (response) {
         _this.messages = response.data.messages;
       });
@@ -26800,11 +26804,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           onClick: function onClick() {
             _ctx.loadMessages(user.id);
           },
-          "class": "p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-gray-200 hover:bg-gray-200 hover:bg-opacity-50 hover:cursor-pointer"
+          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([_ctx.userActive && _ctx.userActive.id == user.id ? 'bg-gray-200 bg-opacity-50' : '', "p-6 text-lg text-gray-600 leading-7 font-semibold border-b border-gray-200 hover:bg-gray-200 hover:bg-opacity-50 hover:cursor-pointer"])
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name) + " ", 1
         /* TEXT */
-        ), _hoisted_8])], 8
-        /* PROPS */
+        ), _hoisted_8])], 10
+        /* CLASS, PROPS */
         , _hoisted_6);
       }), 128
       /* KEYED_FRAGMENT */
