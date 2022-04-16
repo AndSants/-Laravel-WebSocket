@@ -31,7 +31,7 @@
                             <div
                                 v-for="message in messages" :key="message.id"
                                 :class="(message.from == $page.props.user.id) ? 'text-right' : ''"
-                                class="w-full mb-3">
+                                class="w-full mb-3 message">
                                 <p
                                     :class="(message.from == $page.props.user.id) ? 'messageFromMe' : 'messageToMe'"
                                     class="inline-block p-2 rounded-md " style="max-width: 75%;">
@@ -45,12 +45,12 @@
                         </div>
                         <!-- form -->
                         <div v-if="userActive" class="w-full bg-gray-200 bg-opacity-25 p-6 border-t border-gray-200">
-                            <form action="">
+                            <!-- <form > -->
                                 <div class="flex rounded-md overflow-hidden border border-gray-300">
-                                    <input class="flex-1 px-4 py-2 text-sm focus:outline-none" type="text" name="" id="">
-                                    <button type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2">Enviar</button>
+                                    <input v-model="message" class="flex-1 px-4 py-2 text-sm focus:outline-none" type="text" name="" id="">
+                                    <button @click="() => {sendMessage()}" type="submit" class="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2">Enviar</button>
                                 </div>
-                            </form>
+                            <!-- </form> -->
                         </div>
 
                     </div>
@@ -73,21 +73,48 @@
             return {
                 users: [],
                 messages: [],
-                userActive: null
+                userActive: null,
+                message: ''
             }
         },
         methods: {
-            loadMessages: function(userId){
+            scrollToButton: function(){
+                if(this.messages.length){
+                    document.querySelectorAll('.message:last-child')[0].scrollIntoView()
+                }
+            },
+
+            loadMessages: async function(userId){
                 axios.get('api/users/' + userId).then(response => {
                     this.userActive = response.data.user
                 })
-                axios.get('api/messages/' + userId).then(response => {
+
+                await axios.get('api/messages/' + userId).then(response => {
                     this.messages = response.data.messages
                 })
+
+                this.scrollToButton()
             },
             formatDate: function(value) {
                 moment.locale();
                 return moment(value).format('MM/DD/YYYY HH:mm')
+            },
+            sendMessage: async function(){
+                await axios.post('api/messages/store', {
+                    'content': this.message,
+                    'to': this.userActive.id
+                }).then(response => {
+                    this.messages.push({
+                        'from': '1',
+                        'to': this.userActive.id,
+                        'content':this.message,
+                        'created_at': new Date().toISOString(),
+                        'updated_at': new Date().toISOString()
+                    })
+                    this.message = ''
+                })
+
+                this.scrollToButton()
             }
         },
         mounted() {
