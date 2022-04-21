@@ -25,4 +25,13 @@ class UserController extends Controller
     {
         return response()->json(['user' => $user], Response::HTTP_OK);
     }
+
+    public function me()
+    {
+        $userLogged = Auth::user();
+
+        return response()->json([
+            'user' => $userLogged
+        ], Response::HTTP_OK);
+    }
 }

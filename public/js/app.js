@@ -22906,6 +22906,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   data: function data() {
     return {
+      me: [],
       users: [],
       messages: [],
       userActive: null,
@@ -22969,7 +22970,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   'to': this.userActive.id
                 }).then(function (response) {
                   _this2.messages.push({
-                    'from': '1',
+                    'from': _this2.me.id,
                     'to': _this2.userActive.id,
                     'content': _this2.message,
                     'created_at': new Date().toISOString(),
@@ -23002,6 +23003,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     axios.get('api/users').then(function (response) {
       _this3.users = response.data.users;
+    }), axios.get('api/user/me_').then(function (response) {
+      _this3.me = response.data.user;
     });
   }
 }));

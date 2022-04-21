@@ -71,6 +71,7 @@
         },
         data() {
             return {
+                me: [],
                 users: [],
                 messages: [],
                 userActive: null,
@@ -105,7 +106,7 @@
                     'to': this.userActive.id
                 }).then(response => {
                     this.messages.push({
-                        'from': '1',
+                        'from': this.me.id,
                         'to': this.userActive.id,
                         'content':this.message,
                         'created_at': new Date().toISOString(),
@@ -120,7 +121,11 @@
         mounted() {
             axios.get('api/users').then(response => {
                 this.users = response.data.users
+            }),
+            axios.get('api/user/me_').then(response => {
+                this.me = response.data.user
             })
+
         },
     })
 </script>
