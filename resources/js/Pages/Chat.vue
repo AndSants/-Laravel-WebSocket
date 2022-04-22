@@ -121,11 +121,15 @@
         mounted() {
             axios.get('api/users').then(response => {
                 this.users = response.data.users
-            }),
+            })
+
             axios.get('api/user/me_').then(response => {
                 this.me = response.data.user
             })
 
+            Echo.private('user.' + this.me.id).listen('.SendMessage', (e) => {
+                console.log(e)
+            })
         },
     })
 </script>

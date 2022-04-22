@@ -23003,8 +23003,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     axios.get('api/users').then(function (response) {
       _this3.users = response.data.users;
-    }), axios.get('api/user/me_').then(function (response) {
+    });
+    axios.get('api/user/me_').then(function (response) {
       _this3.me = response.data.user;
+    });
+    Echo["private"]('user.' + this.me.id).listen('.SendMessage', function (e) {
+      console.log(e);
     });
   }
 }));
@@ -28289,6 +28293,7 @@ _inertiajs_progress__WEBPACK_IMPORTED_MODULE_2__.InertiaProgress.init({
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
+/* provided dependency */ var process = __webpack_require__(/*! process/browser.js */ "./node_modules/process/browser.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -28308,11 +28313,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "",
+  key: "myappkey",
   cluster: "mt1",
   forceTLS: false,
   wsHost: window.location.hostname,
-  wsPort: 6001
+  wsPort: process.env.LARAVEL_WEBSOCKETS_PORT
 });
 
 /***/ }),
